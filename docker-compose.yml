@@ -1,0 +1,25 @@
+version: "1"
+
+networks:
+    xarxa_gp1f5a1:
+        driver: bridge
+
+services:
+    ipcalc:
+        build: .
+        expose:
+            - "80"
+        volumes:
+             - ./app:/var/www/html
+        networks:
+             - xarxa_gp1f5a1
+    lb:
+        image: nginx:latest
+        volumes:
+        - ./nginx.conf:/etc/nginx/nginx.conf:ro
+        depends_on:
+        - desenvolupament
+        ports:
+        - "80:8000"
+        networks:
+            - xarxa_gp1f5a1
